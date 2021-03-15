@@ -1,0 +1,6 @@
+build
+src/glad.c
+include/glad
+include/KHR
+subprojects/*
+!subprojects/*.wrap
