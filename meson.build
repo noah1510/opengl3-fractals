@@ -71,6 +71,7 @@ ss.add(
         'src/window.cpp',
         'src/fractal.cpp',
         'src/koch_snowflake.cpp',
+        'src/peano_curve.cpp',
     ])
 )
 

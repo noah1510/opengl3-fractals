@@ -5,8 +5,11 @@
 
 #include "window.hpp"
 #include "gl_handling.hpp"
+
+//fractals
 #include "fractal.hpp"
 #include "koch_snowflake.hpp"
+#include "peano_curve.hpp"
 
 int main (int argc, char * argv[]){
     unsigned int max_depth = 0;
@@ -19,7 +22,7 @@ int main (int argc, char * argv[]){
     }
 
     window::getRenderer().setBackgroundColor({0.0f,0.0f,0.0f,1.0f});
-    koch_snowflake::display(window::getRenderer(),max_depth);
+    peano_curve::display(window::getRenderer(),max_depth);
     window::getRenderer().setZoom(0.7f);
 
     while(!window::shouldClose()){
