@@ -67,6 +67,8 @@ ss.add(
     if_true: files([
         'src/main.cpp', 
         'src/glad.c',
+        'src/gl_handling.cpp',
+        'src/window.cpp',
     ])
 )
 
