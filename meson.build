@@ -70,6 +70,7 @@ ss.add(
         'src/gl_handling.cpp',
         'src/window.cpp',
         'src/fractal.cpp',
+        'src/koch_snowflake.cpp',
     ])
 )
 

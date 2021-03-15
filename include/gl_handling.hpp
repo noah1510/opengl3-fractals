@@ -6,6 +6,8 @@
 #define OPENGL_FRACTALS_GL_HANDLING_HPP
 
 #include "glm/glm.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <vector>
 #include <iostream>
@@ -15,8 +17,6 @@ private:
     unsigned int VBO = 0;
     unsigned int VAO = 0;
     unsigned int shaderProgram = 0;
-    unsigned int _width = 0;
-    unsigned int _height = 0;
     unsigned int vertices = 0;
 
     bool isInitialized = false;
@@ -28,10 +28,13 @@ public:
     bool IsInitialized() const;
 
     void render();
-    void displayLineLoop(std::vector<glm::vec2> linesLoop);
+    void displayLineLoop(const std::vector<glm::vec2>& linesLoop);
     void changeBufferSize(unsigned int width, unsigned int height);
-    void setBackgroundColor(glm::vec4 color);
-    void setLineColorOverlay(glm::vec3 color);
+    void setBackgroundColor(const glm::vec4& color);
+    void setLineColorOverlay(const glm::vec3& color);
+    void setZoom(float zoomFactor);
+    void setOffset(const glm::vec2& offset);
+    void rotate(float rotGrad);
 };
 
 #endif //OPENGL_FRACTALS_GL_HANDLING_HPP

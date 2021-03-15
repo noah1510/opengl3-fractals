@@ -20,7 +20,7 @@ protected:
 
 public:
     static std::vector<glm::vec2> getPoints(unsigned int depth){
-        return step(initialLines, depth);
+        return depth == 0 ? initialLines : step(initialLines, depth);
     }
 
     static void display(GL& renderer, unsigned int depth){

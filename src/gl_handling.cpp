@@ -20,9 +20,13 @@ GL::GL() {
     const char *vertexShaderSource = "#version 330 core\n"
                                      "layout (location = 0) in vec2 aPos;\n"
                                      "out vec2 aColor;\n"
+                                     "uniform mat4 cameraProjection;\n"
+                                     "uniform mat4 cameraZoom;\n"
+                                     "uniform mat4 cameraOffset;\n"
+                                     "uniform mat4 rotation;\n"
                                      "void main()\n"
                                      "{\n"
-                                     "    gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);\n"
+                                     "    gl_Position = cameraOffset * cameraProjection * cameraZoom * rotation * vec4(aPos.x, aPos.y, 0.0, 1.0);\n"
                                      "    aColor = vec2((aPos.x+1.0)/2.0,(aPos.y+1.0)/2.0);\n"
                                      "}\0";
 
@@ -79,6 +83,21 @@ GL::GL() {
         return;
     }
 
+    glUseProgram(shaderProgram);
+
+    glm::mat4 cameraProjection = glm::mat4(1.0f);
+    int projectionLoc = glGetUniformLocation(shaderProgram, "cameraProjection");
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(cameraProjection));
+
+    projectionLoc = glGetUniformLocation(shaderProgram, "cameraZoom");
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(cameraProjection));
+
+    projectionLoc = glGetUniformLocation(shaderProgram, "cameraOffset");
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(cameraProjection));
+
+    projectionLoc = glGetUniformLocation(shaderProgram, "rotation");
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(cameraProjection));
+
     isInitialized = true;
 }
 
@@ -101,27 +120,53 @@ void GL::render() {
 
 }
 
-void GL::displayLineLoop(std::vector <glm::vec2> linesLoop) {
+void GL::displayLineLoop(const std::vector <glm::vec2>& linesLoop) {
     if (!isInitialized){return;};
+
+    vertices = linesLoop.size();
 
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(linesLoop), linesLoop.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*2*vertices, linesLoop.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-
-    vertices = linesLoop.size();
 
 }
 
 void GL::changeBufferSize(unsigned int width, unsigned int height){
     glViewport(0, 0, width, height);
+
+    glUseProgram(shaderProgram);
+    glm::mat4 cameraProjection = glm::ortho(-1.0f, (float)width / (float)height, -1.0f, (float)height / (float)width, -10.0f, 10.0f);
+    int projectionLoc = glGetUniformLocation(shaderProgram, "cameraProjection");
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(cameraProjection));
 }
 
-void GL::setBackgroundColor(glm::vec4 color){
+void GL::setBackgroundColor(const glm::vec4& color){
     bg = color;
 }
 
-void GL::setLineColorOverlay(glm::vec3 color){
+void GL::setLineColorOverlay(const glm::vec3& color){
     lc = color;
+}
+
+void GL::setZoom(float zoomFactor){
+    glm::mat4 cameraZoom = glm::mat4(1.0);
+    cameraZoom = glm::scale(cameraZoom,{zoomFactor,zoomFactor,zoomFactor});
+    int projectionLoc = glGetUniformLocation(shaderProgram, "cameraZoom");
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(cameraZoom));
+}
+
+void GL::setOffset(const glm::vec2& offset){
+    glm::mat4 cameraOffset = glm::mat4(1.0);
+    cameraOffset = glm::translate(cameraOffset,{offset,0.0f});
+    int projectionLoc = glGetUniformLocation(shaderProgram, "cameraOffset");
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(cameraOffset));
+}
+
+void GL::rotate(float rotGrad){
+    glm::mat4 rotation = glm::mat4(1.0);
+    rotation = glm::rotate(rotation,rotGrad,{0.0f,0.0f,1.0f});
+    int projectionLoc = glGetUniformLocation(shaderProgram, "rotation");
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(rotation));
 }
