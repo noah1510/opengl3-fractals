@@ -69,6 +69,7 @@ ss.add(
         'src/glad.c',
         'src/gl_handling.cpp',
         'src/window.cpp',
+        'src/fractal.cpp',
     ])
 )
 

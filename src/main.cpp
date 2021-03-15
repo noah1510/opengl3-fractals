@@ -4,6 +4,8 @@
 #include <iostream>
 
 #include "window.hpp"
+#include "gl_handling.hpp"
+#include "fractal.hpp"
 
 int main (){
     if(!window::IsInitialized()){
@@ -11,9 +13,13 @@ int main (){
     }
 
     window::getRenderer().setBackgroundColor({0.0f,0.0f,0.0f,1.0f});
-    window::getRenderer().displayLineLoop({{-0.5,-0.3},{0.5,-0.3},{0.0,0.5}});
+    fractal::display(window::getRenderer(),0);
 
     while(!window::shouldClose()){
+        float timeValue = glfwGetTime();
+        float redValue = sin(timeValue) / 2.0f + 0.5f;
+        window::getRenderer().setLineColorOverlay({redValue,0.0,0.0});
+
         window::render();
         window::swapBuffers();
         window::pollEvents();

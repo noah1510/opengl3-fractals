@@ -23,15 +23,16 @@ GL::GL() {
                                      "void main()\n"
                                      "{\n"
                                      "    gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);\n"
-                                     "    aColor = aPos;\n"
+                                     "    aColor = vec2((aPos.x+1.0)/2.0,(aPos.y+1.0)/2.0);\n"
                                      "}\0";
 
     const char *fragmentShaderSource = "#version 330 core\n"
                                        "out vec4 FragColor;\n"
                                        "in vec2 aColor;\n"
+                                       "uniform vec3 colorOverlay;\n"
                                        "void main()\n"
                                        "{\n"
-                                       "    FragColor = vec4(0.7f, aColor.x, aColor.y, 1.0f);\n"
+                                       "    FragColor = vec4(colorOverlay,1.0f)+vec4(0.0f, aColor.x, aColor.y, 1.0f);\n"
                                        "}\0";
 
     unsigned int vertexShader;
@@ -91,7 +92,10 @@ void GL::render() {
     glClearColor(bg.r,bg.g,bg.b,bg.a);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    int vertexColorLocation = glGetUniformLocation(shaderProgram, "colorOverlay");
     glUseProgram(shaderProgram);
+    glUniform3f(vertexColorLocation, lc.r, lc.g, lc.b);
+
     glBindVertexArray(VAO);
     glDrawArrays(GL_LINE_LOOP, 0, vertices);
 
@@ -116,4 +120,8 @@ void GL::changeBufferSize(unsigned int width, unsigned int height){
 
 void GL::setBackgroundColor(glm::vec4 color){
     bg = color;
+}
+
+void GL::setLineColorOverlay(glm::vec3 color){
+    lc = color;
 }

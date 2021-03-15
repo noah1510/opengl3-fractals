@@ -22,7 +22,7 @@ private:
     bool isInitialized = false;
 
     glm::vec4 bg = {0.2f, 0.3f, 0.3f, 1.0f};
-    glm::vec4 lc = {0.7f, 0.0f, 0.0f, 1.0f};
+    glm::vec3 lc = {0.7f, 0.0f, 0.0f};
 public:
     GL();
     bool IsInitialized() const;
@@ -31,6 +31,7 @@ public:
     void displayLineLoop(std::vector<glm::vec2> linesLoop);
     void changeBufferSize(unsigned int width, unsigned int height);
     void setBackgroundColor(glm::vec4 color);
+    void setLineColorOverlay(glm::vec3 color);
 };
 
 #endif //OPENGL_FRACTALS_GL_HANDLING_HPP
