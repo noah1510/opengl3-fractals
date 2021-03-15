@@ -23,6 +23,7 @@ private:
 
     glm::vec4 bg = {0.2f, 0.3f, 0.3f, 1.0f};
     glm::vec3 lc = {0.7f, 0.0f, 0.0f};
+    glm::vec2 currentOffset = {0.0f,0.0f};
 public:
     GL();
     bool IsInitialized() const;
@@ -35,6 +36,7 @@ public:
     void setZoom(float zoomFactor);
     void setOffset(const glm::vec2& offset);
     void rotate(float rotGrad);
+    const glm::vec2& getCurrentOffset() const;
 };
 
 #endif //OPENGL_FRACTALS_GL_HANDLING_HPP

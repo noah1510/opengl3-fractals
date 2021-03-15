@@ -6,11 +6,6 @@
 #include "window.hpp"
 #include "gl_handling.hpp"
 
-//fractals
-#include "fractal.hpp"
-#include "koch_snowflake.hpp"
-#include "peano_curve.hpp"
-
 int main (int argc, char * argv[]){
     unsigned int max_depth = 0;
     if(argc > 1){
@@ -22,13 +17,19 @@ int main (int argc, char * argv[]){
     }
 
     window::getRenderer().setBackgroundColor({0.0f,0.0f,0.0f,1.0f});
-    peano_curve::display(window::getRenderer(),max_depth);
+    window::setFractal(peano,max_depth);
     window::getRenderer().setZoom(0.7f);
+
+    std::cout << "Commands (Buttons to press):" << std::endl;
+    std::cout << "  'u' - display koch snowflake" << std::endl;
+    std::cout << "  'i' - display peano curve" << std::endl;
+    std::cout << "  '0-9' - change render depth" << std::endl;
+    std::cout << "  'Esc' - close the program" << std::endl;
 
     while(!window::shouldClose()){
         float timeValue = glfwGetTime();
         window::getRenderer().setLineColorOverlay({sin(timeValue) / 2.0f + 0.5f,0.0,0.0});
-        window::getRenderer().rotate(sin(timeValue)*3.1415);
+        window::getRenderer().rotate(sin(timeValue/10)*3.1415);
 
         window::render();
         window::swapBuffers();

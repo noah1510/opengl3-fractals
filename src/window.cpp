@@ -55,6 +55,37 @@ bool window::_IsInitialized(){
     return  _window != nullptr && renderer.IsInitialized();
 }
 
+void window::_setFractal(fractal_used frac, unsigned int depth){
+    _frac = frac;
+    _depth = depth;
+
+    switch(_frac){
+        case(koch):
+            koch_snowflake::display(renderer,_depth);
+            break;
+        case(peano):
+            peano_curve::display(renderer,_depth);
+            break;
+
+        default:
+        case(generic):
+            fractal::display(renderer,_depth);
+            break;
+    }
+}
+
 void window::_handleInput(){
     if(glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {glfwSetWindowShouldClose(_window, true);};
+
+    glm::vec2 delta = {0.0,0.0};
+
+    if(glfwGetKey(_window, GLFW_KEY_W) == GLFW_PRESS){delta.y = -0.05;};
+    if(glfwGetKey(_window, GLFW_KEY_S) == GLFW_PRESS){delta.y = 0.05;};
+    if(glfwGetKey(_window, GLFW_KEY_A) == GLFW_PRESS){delta.x = 0.05;};
+    if(glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS){delta.x = -0.05;};
+
+    renderer.setOffset(renderer.getCurrentOffset()+delta);
+
+    //handle input for fractal selection and depth setting
+
 }

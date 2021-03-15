@@ -158,6 +158,7 @@ void GL::setZoom(float zoomFactor){
 }
 
 void GL::setOffset(const glm::vec2& offset){
+    currentOffset = offset;
     glm::mat4 cameraOffset = glm::mat4(1.0);
     cameraOffset = glm::translate(cameraOffset,{offset,0.0f});
     int projectionLoc = glGetUniformLocation(shaderProgram, "cameraOffset");
@@ -169,4 +170,8 @@ void GL::rotate(float rotGrad){
     rotation = glm::rotate(rotation,rotGrad,{0.0f,0.0f,1.0f});
     int projectionLoc = glGetUniformLocation(shaderProgram, "rotation");
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(rotation));
+}
+
+const glm::vec2& GL::getCurrentOffset() const{
+    return currentOffset;
 }
