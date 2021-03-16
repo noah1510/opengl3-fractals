@@ -87,5 +87,45 @@ void window::_handleInput(){
     renderer.setOffset(renderer.getCurrentOffset()+delta);
 
     //handle input for fractal selection and depth setting
+    fractal_used new_fractal = _frac;
+    unsigned int new_depth = _depth;
+
+    if(glfwGetKey(_window, GLFW_KEY_U) == GLFW_PRESS){new_fractal = koch;};
+    if(glfwGetKey(_window, GLFW_KEY_I) == GLFW_PRESS){new_fractal = peano;};
+
+    if(glfwGetKey(_window, GLFW_KEY_0) == GLFW_PRESS){new_depth = 0;};
+    if(glfwGetKey(_window, GLFW_KEY_1) == GLFW_PRESS){new_depth = 1;};
+    if(glfwGetKey(_window, GLFW_KEY_2) == GLFW_PRESS){new_depth = 2;};
+    if(glfwGetKey(_window, GLFW_KEY_3) == GLFW_PRESS){new_depth = 3;};
+    if(glfwGetKey(_window, GLFW_KEY_4) == GLFW_PRESS){new_depth = 4;};
+    if(glfwGetKey(_window, GLFW_KEY_5) == GLFW_PRESS){new_depth = 5;};
+    if(glfwGetKey(_window, GLFW_KEY_6) == GLFW_PRESS){new_depth = 6;};
+    if(glfwGetKey(_window, GLFW_KEY_7) == GLFW_PRESS){new_depth = 7;};
+    if(glfwGetKey(_window, GLFW_KEY_8) == GLFW_PRESS){new_depth = 8;};
+    if(glfwGetKey(_window, GLFW_KEY_9) == GLFW_PRESS){new_depth = 9;};
+
+    static auto last_plus = glfwGetKey(_window, PLUS_KEY);
+    static auto last_minus = glfwGetKey(_window, MINUS_KEY);
+
+    auto new_plus = glfwGetKey(_window, PLUS_KEY);
+    auto new_minus = glfwGetKey(_window, MINUS_KEY);
+
+    if(new_plus != last_plus){
+        if (last_plus == GLFW_RELEASE){
+            new_depth++;
+        }
+        last_plus = new_plus;
+    };
+
+    if(new_minus != last_minus){
+        if (last_minus == GLFW_RELEASE && new_depth != 0){
+            new_depth--;
+        }
+        last_minus = new_minus;
+    };
+
+    if (new_fractal != _frac || new_depth != _depth){
+        _setFractal(new_fractal,new_depth);
+    }
 
 }

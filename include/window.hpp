@@ -10,6 +10,9 @@
 #include "GLFW/glfw3.h"
 #include "gl_handling.hpp"
 
+#define PLUS_KEY GLFW_KEY_RIGHT_BRACKET
+#define MINUS_KEY GLFW_KEY_SLASH
+
 //fractals
 #include "fractal.hpp"
 #include "koch_snowflake.hpp"
